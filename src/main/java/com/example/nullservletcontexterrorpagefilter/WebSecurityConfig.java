@@ -38,6 +38,8 @@ public class WebSecurityConfig {
         http.authorizeRequests(authorize -> authorize
                 .anyRequest().authenticated()
         );
+        // fails with SessionCreationPolicy.NEVER or SessionCreationPolicy.STATELESS
+        // pass with SessionCreationPolicy.IF_REQUIRED or SessionCreationPolicy.ALWAYS or removed/default
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER)
         );

@@ -1,8 +1,37 @@
-# Null ServletContext Reproduction
+# Security Bug Reproduction
 
-Attempt to reproduce error finding in spring-boot 3.x
+(Repo named after original bug that is now fixed, now used to generally minimally reproduce other 
+issues related to security/error page integration.)
 
-## Run Tests
+## Current Issue
+
+In `3.0.0-M4` we now get a problem where a `403` error becomes a `401` error upon trying to hit the 
+error page when using stateless sessions/basic auth.
+
+Demonstrated in failure of test: 
+`NullServletcontextErrorpagefilterApplicationTests.noAuthIs403` 
+
+Hitting an endpoint without the proper role should be `403`.
+
+Moving from `3.0.0-M3` to `3.0.0-M4` this became a `401`.
+
+Changing the `SessionCreationPolicy` away from `NEVER`/`STATELESS` appears to fix the problem. 
+
+## Previous Issues
+
+### Null ServletContext with multiple filter chains
+
+https://github.com/spring-projects/spring-boot/issues/29564
+
+We often use a library-provided `SecurityFilterChain` targeting actuator endpoints to provide standardized
+authentication and behavior of the actuator across our services, irrespective of the applications' own
+security setup.
+
+Applications then include their own `SecurityFilterChain`.
+
+In `3.0.0-M1` an error would occur because `ServletContext` was null on error page hit.
+
+See `5ee3264093d7fd3cf6ae213aced7cf636e8c33c7` for repro.
 
 Failure occurs in tests where error page is to be hit.
 
