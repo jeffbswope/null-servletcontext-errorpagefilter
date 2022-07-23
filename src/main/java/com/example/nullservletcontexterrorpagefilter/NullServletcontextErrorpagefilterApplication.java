@@ -31,15 +31,5 @@ public class NullServletcontextErrorpagefilterApplication {
 		}
 	}
 
-	public record Fob(String key, String value) {
-
-		public String getKey() {
-			return key;
-		}
-
-		public String getValue() {
-			return value;
-		}
-	}
-
+	public record Fob(String key, String value) {}
 }
